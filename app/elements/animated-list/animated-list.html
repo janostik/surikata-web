@@ -1,0 +1,63 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animated-pages.html">
+
+<dom-module id="animated-list">
+
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      neon-animated-pages {
+        height: 100%;
+      }
+    </style>
+    <neon-animated-pages id="pages" selected="0">
+
+      <question-list on-open="_onQuestionClick" questions="{{questionList}}"></question-list>
+
+      <question-detail id="question-detail" hero-id="hero" on-close="_onQuestionClose"></question-detail>
+
+    </neon-animated-pages>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'animated-list',
+
+      properties: {
+        questionList: {
+          type: Array,
+          value: function () {
+            return [
+              {content: 'How do you like this awesome surikata design?', votes: 65, author: {id: 0, name: 'Anonymous'}},
+              {content: 'Surikata is just AWESOME name!!', votes: 43, author: {id: 0, name: 'Anonymous'}},
+              {content: 'This was kind of stupid question', votes: 11, author: {id: 0, name: 'Rada'}},
+              {content: 'What am I doing here?', votes: 5, author: {id: 0, name: 'Fera'}}
+            ];
+          }
+        },
+      },
+      _onQuestionClick: function() {
+        this.$['question-detail'].question = event.detail.data;
+        this.$.pages.selected = 1;
+      },
+      _onQuestionClose: function() {
+        this.$.pages.selected = 0;
+      }
+    });
+  })();
+  </script>
+</dom-module>

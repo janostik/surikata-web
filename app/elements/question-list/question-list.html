@@ -1,0 +1,136 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+<dom-module id="question-list">
+  <link rel="import" type="css" href="../../styles/shared.css">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+      .counter {
+        margin-bottom: 0px;
+      }
+      .label {
+        font-size: .8em;
+      }
+      .padded {
+        padding: 8px 24px 0px 24px;
+      }
+      .gray-text {
+        color: gray;
+      }
+      .action {
+        padding: 16px 8px 16px 30px;
+      }
+      .body {
+        padding: 16px 30px 16px 8px;
+      }
+    </style>
+
+    <template is="dom-repeat" items="{{questions}}">
+
+      <paper-material class="row" elevation="1">
+        <div class="column action">
+          <paper-icon-button icon="thumb-up" class="green-500-color"></paper-icon-button>
+          <h2 class="counter">{{item.votes}}</h2>
+          <span class="label">votes</span>
+        </div>
+        <div class="row flex-child body" >
+          <div class="column flex-child padded">
+            <div class="content-wrapper">{{item.content}}</div>
+            <span class="label gray-text">by: {{item.author.name}}</span>
+          </div>
+          <div class="column">
+            <iron-icon icon="arrow-forward" class="flex-child"></iron-icon>
+          </div>
+        </div>
+      </paper-material>
+    </template>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+
+      is: 'question-list',
+
+      behaviors: [
+        Polymer.NeonSharedElementAnimatableBehavior
+      ],
+
+      properties: {
+
+        questions: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+
+        animationConfig: {
+          type: Object,
+          value: function () {
+            return {
+              'exit': [{
+                name: 'ripple-animation',
+                id: 'ripple',
+                fromPage: this
+              }, {
+                name: 'hero-animation',
+                id: 'hero',
+                fromPage: this
+              }]
+            };
+          }
+        }
+
+      },
+
+      listeners: {
+        click: '_onClick'
+      },
+
+      _onClick: function (event) {
+        var target = event.target;
+        while (target !== this && !target._templateInstance) {
+          target = target.parentNode;
+        }
+
+        // configure the page animation
+        this.sharedElements = {
+          'hero': target,
+          'ripple': target
+        };
+
+        this.animationConfig.exit[0].gesture = {
+          x: event.x || event.pageX,
+          y: event.y || event.pageY
+        };
+
+        this.fire('open', {
+          tile: target,
+          data: target._templateInstance.item
+        });
+      }
+
+    });
+  })();
+  </script>
+</dom-module>

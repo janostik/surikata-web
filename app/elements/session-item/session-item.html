@@ -1,0 +1,132 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+
+<dom-module id="session-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      paper-material {
+        background-color: white;
+        margin: 10px 5px 0px 5px;
+        height: 170px;
+        border-radius: 3px;
+        @apply(--layout-horizontal);
+      }
+      :host[active] paper-material {
+        background-color: #1abc9c;
+      }
+      :host[active] .title ::content {
+        color: whitesmoke;
+      }
+      :host[active] .description ::content {
+        color: ghostwhite;
+      }
+
+      :host[small] paper-material {
+        height: 80px;
+      }
+      .content {
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+      }
+
+      .title ::content *{
+        padding: 16px 12px 4px 16px;Å
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: bold;
+        @apply(--paper-font-subheading);
+      }
+
+      :host[small] .description ::content * {
+        white-space: nowrap;
+      }
+
+      .description ::content * {
+        padding: 4px 16px 0px 16px;
+        margin: 0;
+        @apply(--paper-font-body1);
+        /*color: gray;*/
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: justify;
+      }
+
+      @media (-webkit-min-device-pixel-ratio: 0) {
+        :host:not([small]) .description ::content * {
+          display: -webkit-box;
+          -webkit-line-clamp: 3; /* number of lines to show */
+          -webkit-box-orient: vertical;
+        }
+      }
+
+      .round-image ::content img {
+        border-radius: 50%;
+      }
+
+      .right-image {
+        --iron-image-width: 40px;
+        --iron-image-height: 40px;
+        margin: 20px 8px 20px 0px;
+      }
+
+      .bottom-image {
+        --iron-image-width: 40px;
+        --iron-image-height: 40px;
+        margin: 4px 16px 8px 16px;
+      }
+
+      .flex-child {
+        @apply(--layout-flex)
+      }
+
+    </style>
+    <paper-material elevation="1">
+      <div class="left-image">
+        <content select="[left-image]"></content>
+      </div>
+      <div class="content">
+        <span class="title">
+          <content select="[title]"></content>
+        </span>
+        <span class="description flex-child">
+          <content select="[description]"></content>
+        </span>
+        <div class="round-image bottom-image">
+          <content select="[bottom-author]"></content>
+        </div>
+      </div>
+      <div class="round-image right-image">
+        <content select="[right-author]"></content>
+      </div>
+
+    </paper-material>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'session-item',
+
+      properties: {
+      }
+    });
+  })();
+  </script>
+</dom-module>

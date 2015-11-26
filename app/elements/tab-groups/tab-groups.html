@@ -1,0 +1,78 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
+
+<dom-module id="tab-groups">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      :root {
+        --paper-tabs-selection-bar-color: red;
+      }
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 24px;
+        color: #333;
+      }
+      paper-tabs, paper-toolbar {
+        background-color: #00bcd4;
+        color: #fff;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+      }
+      paper-toolbar paper-tabs {
+        box-shadow: none;
+      }
+      paper-tabs[noink][no-bar] paper-tab.iron-selected {
+        color: #ffff8d;
+      }
+      paper-tabs[align-bottom] {
+        box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.15);
+      }
+      h3 {
+        font-size: 16px;
+        font-weight: 400;
+        padding-top: 20px;
+      }
+      .blue {
+        --paper-tabs-selection-bar-color: blue;
+      }
+    </style>
+    <paper-tabs selected="{{selected}}" noink class="blue">
+      <paper-tab class="blue">Architecture</paper-tab>
+      <paper-tab>Platform</paper-tab>
+      <paper-tab>User interaction</paper-tab>
+      <paper-tab>Cloud</paper-tab>
+      <paper-tab>Hands-on lab</paper-tab>
+    </paper-tabs>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'tab-groups',
+
+      properties: {
+        foo: {
+          type: String,
+          value: 'tab-groups',
+          notify: true
+        }
+      }
+    });
+  })();
+  </script>
+</dom-module>

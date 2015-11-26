@@ -1,0 +1,197 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tab/paper-tab.html">
+<link rel="import" href="../timeline-items/timeline-items.html">
+<link rel="import" href="../session-item/session-item.html">
+<link rel="import" href="../session-item/session-empty-item.html">
+
+<dom-module id="session-items">
+  <template>
+    <style>
+      :host {
+        display: block;
+        @apply(--layout-vertical);
+      }
+
+      :root {
+        height: 100%;
+        @apply(--layout-vertical);
+      }
+
+      .row {
+        @apply(--layout-horizontal)
+      }
+
+      .column {
+        @apply(--layout-vertical)
+      }
+
+      .scrollable {
+        @apply(--layout-scroll);
+        @apply(--paper-dialog-scrollable);
+      }
+
+      .flex-child {
+        @apply(--layout-flex);
+      }
+
+      .empty {
+        width: 80px;
+      }
+    </style>
+
+    <div class="row scrollable">
+      <timeline-items></timeline-items>
+
+      <div class="column flex-child">
+        <session-item small>
+          <div title>Networking 101</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
+        </session-item>
+        <session-empty-item>
+        </session-empty-item>
+        <session-item>
+          <div title>Super polymer</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
+          <iron-image bottom-author src="http://lorempixel.com/40/40/people/"></iron-image>
+        </session-item>
+        <session-item small active>
+          <div title>Networking 101</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+        </session-item>
+        <session-item>
+          <div title>Super polymer</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <iron-image bottom-author src="http://lorempixel.com/40/40/people/"></iron-image>
+        </session-item>
+        <session-empty-item>
+        </session-empty-item>
+        <session-item>
+          <div title>Super polymer</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
+          <iron-image bottom-author src="http://lorempixel.com/40/40/people/"></iron-image>
+        </session-item>
+        <session-empty-item>
+        </session-empty-item>
+      </div>
+      <div class="column flex-child">
+        <session-item>
+          <div title>Super polymer</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <iron-image bottom-author src="http://lorempixel.com/40/40/people/"></iron-image>
+        </session-item>
+        <session-empty-item>
+        </session-empty-item>
+        <session-item active>
+          <div title>Super polymer</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
+        </session-item>
+        <session-empty-item>
+        </session-empty-item>
+
+        <session-item small>
+          <div title>Networking 101</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
+        </session-item>
+        <session-item small>
+          <div title>Networking 101</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
+        </session-item>
+
+        <session-item>
+          <div title>Super polymer</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
+          <iron-image bottom-author src="http://lorempixel.com/40/40/people/"></iron-image>
+        </session-item>
+      </div>
+      <div class="column flex-child">
+        <session-empty-item>
+        </session-empty-item>
+
+        <session-item small>
+          <div title>Networking 101</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
+        </session-item>
+        <session-item small>
+          <div title>Networking 101</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
+        </session-item>
+
+        <session-item active>
+          <div title>Super polymer</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
+        </session-item>
+
+        <session-item small>
+          <div title>Networking 101</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
+        </session-item>
+        <session-empty-item>
+        </session-empty-item>
+        <session-item>
+          <div title>Super polymer</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
+        </session-item>
+        <session-item small>
+          <div title>Networking 101</div>
+          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
+        </session-item>
+      </div>
+      <div class="empty"></div>
+    </div>
+
+    <div class="row">
+      <div class="empty"></div>
+      <paper-tabs class="flex-child">
+        <paper-tab>
+          test 1
+        </paper-tab>
+        <paper-tab>
+          test 2
+        </paper-tab>
+        <paper-tab>
+          test 3
+        </paper-tab>
+      </paper-tabs>
+      <div class="empty"></div>
+    </div>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'session-items',
+
+      properties: {
+      }
+    });
+  })();
+  </script>
+</dom-module>
