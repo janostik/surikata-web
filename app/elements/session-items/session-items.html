@@ -8,27 +8,40 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-styles/typography.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../bower_components/iron-image/iron-image.html">
-<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
-<link rel="import" href="../../bower_components/paper-tab/paper-tab.html">
-<link rel="import" href="../timeline-items/timeline-items.html">
-<link rel="import" href="../session-item/session-item.html">
-<link rel="import" href="../session-item/session-empty-item.html">
+<link rel='import' href='../../bower_components/polymer/polymer.html'>
+<link rel='import' href='../../bower_components/paper-styles/typography.html'>
+<link rel='import' href='../../bower_components/iron-flex-layout/iron-flex-layout.html'>
+<link rel='import' href='../../bower_components/iron-image/iron-image.html'>
+<link rel='import' href='../../bower_components/iron-icon/iron-icon.html'>
+<link rel='import' href='../../bower_components/paper-tabs/paper-tabs.html'>
+<link rel='import' href='../../bower_components/paper-tabs/paper-tab.html'>
+<link rel='import' href='../../bower_components/neon-animation/neon-animation.html'>
+<link rel='import' href='../../bower_components/iron-ajax/iron-ajax.html'>
+<link rel='import' href='../timeline-items/timeline-items.html'>
+<link rel='import' href='../session-item/session-item.html'>
+<link rel='import' href='../session-item/session-empty-item.html'>
+<link rel='import' href='../session-item/session-static-item.html'>
+<link rel='import' href='pager-behaviour.html'>
 
-<dom-module id="session-items">
+<dom-module id='session-items'>
+  <link rel='import' type='css' href='../../styles/shared.css'>
+
   <template>
     <style>
       :host {
         display: block;
         @apply(--layout-vertical);
+        visibility: hidden;
       }
 
       :root {
         height: 100%;
         @apply(--layout-vertical);
+      }
+
+      .header {
+        @apply(--paper-font-title);
+        color: rgba(0,0,0,0.4);
       }
 
       .row {
@@ -51,147 +64,234 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .empty {
         width: 80px;
       }
+
+      .hidden {
+        visibility: hidden;
+      }
     </style>
 
-    <div class="row scrollable">
-      <timeline-items></timeline-items>
+    <iron-ajax auto
+               url="http://suricata.cleverapps.io/core/event/99305fe9"
+               handle-as="json"
+               last-response="{{model}}"
+               on-response="responseHandler"
+    ></iron-ajax>
 
-      <div class="column flex-child">
-        <session-item small>
-          <div title>Networking 101</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
-        </session-item>
-        <session-empty-item>
-        </session-empty-item>
-        <session-item>
-          <div title>Super polymer</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
-          <iron-image bottom-author src="http://lorempixel.com/40/40/people/"></iron-image>
-        </session-item>
-        <session-item small active>
-          <div title>Networking 101</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-        </session-item>
-        <session-item>
-          <div title>Super polymer</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <iron-image bottom-author src="http://lorempixel.com/40/40/people/"></iron-image>
-        </session-item>
-        <session-empty-item>
-        </session-empty-item>
-        <session-item>
-          <div title>Super polymer</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
-          <iron-image bottom-author src="http://lorempixel.com/40/40/people/"></iron-image>
-        </session-item>
-        <session-empty-item>
-        </session-empty-item>
+
+
+    <div class="scrollable">
+      <div class="row">
+        <div class="empty"></div>
+        <h1 class="header">Sessions</h1>
       </div>
-      <div class="column flex-child">
-        <session-item>
-          <div title>Super polymer</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <iron-image bottom-author src="http://lorempixel.com/40/40/people/"></iron-image>
-        </session-item>
-        <session-empty-item>
-        </session-empty-item>
-        <session-item active>
-          <div title>Super polymer</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
-        </session-item>
-        <session-empty-item>
-        </session-empty-item>
+      <div class="row">
+        <timeline-items></timeline-items>
 
-        <session-item small>
-          <div title>Networking 101</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
-        </session-item>
-        <session-item small>
-          <div title>Networking 101</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
-        </session-item>
+        <template id="board" is="dom-repeat" items="{{model.event.rooms}}" as="room">
+          <div class="column flex-child">
 
-        <session-item>
-          <div title>Super polymer</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
-          <iron-image bottom-author src="http://lorempixel.com/40/40/people/"></iron-image>
-        </session-item>
+            <template is="dom-repeat" items="{{generateSessions(model.event.sessions, room)}}" as="session">
+
+              <template is="dom-if" if="{{_isEmpty(session)}}">
+                <session-empty-item size="{{session.size}}"></session-empty-item>
+              </template>
+              <template is="dom-if" if="{{_isSession(session)}}">
+                <session-item class="session" on-open="_onSessionOpen" session="{{session}}"
+                              tint="{{room.tint}}"></session-item>
+              </template>
+              <template is="dom-if" if="{{_isStatic(session)}}">
+                <session-static-item class="session" session="{{session}}"></session-static-item>
+              </template>
+            </template>
+          </div>
+        </template>
+
+        <div class="empty"></div>
       </div>
-      <div class="column flex-child">
-        <session-empty-item>
-        </session-empty-item>
 
-        <session-item small>
-          <div title>Networking 101</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
-        </session-item>
-        <session-item small>
-          <div title>Networking 101</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
-        </session-item>
-
-        <session-item active>
-          <div title>Super polymer</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
-        </session-item>
-
-        <session-item small>
-          <div title>Networking 101</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <div right-author><iron-image class="round-image" src="http://lorempixel.com/40/40/people/" ></iron-image></div>
-        </session-item>
-        <session-empty-item>
-        </session-empty-item>
-        <session-item>
-          <div title>Super polymer</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-          <iron-image left-image src="http://lorempixel.com/150/170/people/"></iron-image>
-        </session-item>
-        <session-item small>
-          <div title>Networking 101</div>
-          <div description>Super duper long description of awesome lecture Super duper long description of awesome lecture Super duper long description of awesome lecture</div>
-        </session-item>
-      </div>
-      <div class="empty"></div>
     </div>
 
     <div class="row">
-      <div class="empty"></div>
-      <paper-tabs class="flex-child">
-        <paper-tab>
-          test 1
-        </paper-tab>
-        <paper-tab>
-          test 2
-        </paper-tab>
-        <paper-tab>
-          test 3
-        </paper-tab>
-      </paper-tabs>
-      <div class="empty"></div>
+      <next-room-item class$="{{_previousRoomClass()}}">
+        <iron-icon icon="chevron-left"></iron-icon>
+      </next-room-item>
+      <template is="dom-repeat" items="{{model.event.rooms}}" as="room">
+        <room-item class$="{{_roomClass(index)::redraw}}" tint="{{room.tint}}">{{room.name}}</room-item>
+      </template>
+      <next-room-item class$="{{_nextRoomClass()}}">
+        <iron-icon icon="chevron-right"></iron-icon>
+      </next-room-item>
     </div>
+
 
   </template>
   <script>
-  (function() {
-    'use strict';
+    (function () {
+      'use strict';
+      /*global
+       PagerBehaviour
+       */
 
-    Polymer({
-      is: 'session-items',
+      Polymer({
+        is: 'session-items',
 
-      properties: {
-      }
-    });
-  })();
+        behaviors: [
+          Polymer.NeonSharedElementAnimatableBehavior,
+          Polymer.NeonAnimationRunnerBehavior,
+          PagerBehaviour
+        ],
+
+        properties: {
+          model: {
+            type: Object,
+            notify: true,
+            value: function () {
+              return {};
+            }
+          },
+          animationConfig: {
+            type: Object,
+            value: function () {
+              return {
+                'exit': [{
+                  name: 'ripple-animation',
+                  id: 'ripple',
+                  fromPage: this
+                }, {
+                  name: 'hero-animation',
+                  id: 'hero',
+                  hero: this.$.card,
+                  fromPage: this
+                }],
+                'entry': [{
+                  name: 'cascaded-animation',
+                  animation: 'transform-animation',
+                  transformFrom: 'translateY(400%)',
+                  transformTo: 'none',
+                  nodes: [],
+                  timing: {
+                    delay: 50
+                  }
+                }]
+              };
+            }
+          }
+        },
+
+        listeners: {
+          click: '_onClick'
+        },
+
+        generateSessions: function (sessions, room) {
+          var filtered = this.filterByRoom(sessions, room);
+          var withSizes = this.computeSizes(filtered);
+          return withSizes;
+        },
+
+        filterByRoom: function (sessions, room) {
+          return sessions.filter(function (session) {
+            return session.room === room.name;
+          });
+        },
+
+        computeSizes: function (sessions) {
+          sessions.sort(function (s1, s2) {
+            return (s1.from > s2.from) ? 1 : ((s2.from > s1.from) ? -1 : 0);
+          });
+          var withSpaces = this.copyWithSpaces(sessions);
+          withSpaces.forEach(function (session) {
+            var startDate = new Date(session.from * 1000);
+            var endDate = new Date(session.to * 1000);
+            var totalMinutes = (endDate.getHours() - startDate.getHours()) * 60;
+            totalMinutes += (endDate.getMinutes() - startDate.getMinutes());
+            session.size = totalMinutes / 5;
+          });
+          return withSpaces;
+        },
+
+        copyWithSpaces: function (sessions) {
+          for (var i = sessions.length - 1; i >= 1; i--) {
+            sessions.splice(i, 0, {
+              from: sessions[i - 1].to,
+              to: sessions[i].from,
+              isEmpty: true
+            });
+          }
+          return sessions;
+        },
+
+        _isEmpty: function (session) {
+          return session.isEmpty;
+        },
+        _isStatic: function () {
+          return false;
+//         return !session.isEmpty && !session.hasDetail;
+        },
+        _isSession: function (session) {
+          return !session.isEmpty;
+//        return !session.isEmpty && session.hasDetail;
+        },
+
+        _refreshPaging: function () {
+          this.setSize(3);
+          if (this.model && this.model.event) {
+            this.setTotal(this.model.event.rooms.length);
+          }
+        },
+        _previousRoomClass: function () {
+          this._refreshPaging();
+          return this.hasPrevious() ? '' : 'hidden';
+        },
+
+        _nextRoomClass: function () {
+          this._refreshPaging();
+          return this.hasNext() ? '' : 'hidden';
+        },
+
+        _roomClass: function (index) {
+          this._refreshPaging();
+          return this.contains(index) ? '' : 'hidden';
+        },
+
+        _onSessionOpen: function (event, target) {
+
+          // configure the page animation
+          this.sharedElements = {
+            'hero': target,
+            'ripple':target
+          };
+
+          this.fire('open', {
+            eventToken: this.model.event.eventToken,
+            session: event.currentTarget.session
+          });
+        },
+        responseHandler: function () {
+
+          this.async(function () {
+            var config = this.animationConfig.entry;
+
+            var columns = Polymer.dom(this.root).querySelectorAll('.column');
+            for(var i = 0; i < columns.length; i++) {
+
+              var sessions = Polymer.dom(columns[i]).querySelectorAll('.session');
+              config.push({
+                name: 'cascaded-animation',
+                animation: 'transform-animation',
+                transformFrom: 'translateY(400%)',
+                transformTo: 'none',
+                nodes: sessions,
+                timing: {
+                  delay: i * 200
+                }
+              });
+            }
+
+            this.style.visibility = 'visible';
+            this.playAnimation('entry');
+          }, 1);
+        }
+      });
+    })();
   </script>
 </dom-module>

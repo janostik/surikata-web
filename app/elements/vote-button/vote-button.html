@@ -1,0 +1,212 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
+
+
+<dom-module id="vote-button">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .button {
+        cursor: pointer;
+        position: relative;
+        height: 56px;
+        width: 56px;
+        border-radius: 100%;
+        background: none;
+        @apply(--paper-font-common-base);
+        font-size: 13px;
+        overflow: hidden;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      .button input {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
+      .button label {
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+      }
+
+      .button .bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        border-radius: inherit;
+        -webkit-animation: 0.3s forwards;
+        animation: 0.3s forwards;
+        box-shadow: 0 0 0 0 #4CAF50 inset, 0 0 0 28px #E0E0E0 inset;
+      }
+      .button .icon, .button .count, .button .count-up {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-transition: -webkit-transform 0.3s;
+        transition: -webkit-transform 0.3s;
+        transition: transform 0.3s;
+        transition: transform 0.3s, -webkit-transform 0.3s;
+      }
+      .button .icon svg {
+        margin-bottom: 2em;
+        -webkit-transition-delay: 0.1s;
+        transition-delay: 0.1s;
+      }
+      .button .count {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        color: #000;
+        -webkit-transition-delay: 0s;
+        transition-delay: 0s;
+      }
+      .button .count-up {
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+        color: #fff;
+      }
+      @-webkit-keyframes up {
+        0% {
+          box-shadow: 0 0 0 28px #E0E0E0 inset, 0 0 0 28px #4CAF50 inset;
+        }
+        100% {
+          box-shadow: 0 0 0 0 #E0E0E0 inset, 0 0 0 28px #4CAF50 inset;
+        }
+      }
+      @keyframes up {
+        0% {
+          box-shadow: 0 0 0 28px #E0E0E0 inset, 0 0 0 28px #4CAF50 inset;
+        }
+        100% {
+          box-shadow: 0 0 0 0 #E0E0E0 inset, 0 0 0 28px #4CAF50 inset;
+        }
+      }
+      @-webkit-keyframes down {
+        0% {
+          box-shadow: 0 0 0 28px #4CAF50 inset, 0 0 0 28px #E0E0E0 inset;
+        }
+        100% {
+          box-shadow: 0 0 0 0 #4CAF50 inset, 0 0 0 28px #E0E0E0 inset;
+        }
+      }
+      @keyframes down {
+        0% {
+          box-shadow: 0 0 0 28px #4CAF50 inset, 0 0 0 28px #E0E0E0 inset;
+        }
+        100% {
+          box-shadow: 0 0 0 0 #4CAF50 inset, 0 0 0 28px #E0E0E0 inset;
+        }
+      }
+
+      .button:not(.checked) .bg {
+        -webkit-animation-name: down;
+        animation-name: down;
+      }
+
+      .button.checked .bg {
+        -webkit-animation-name: up;
+        animation-name: up;
+      }
+
+      .button.checked .icon {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        -webkit-transition-delay: 0s;
+        transition-delay: 0s;
+      }
+
+      .button.checked .count-up {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+      }
+
+      .button.checked .count {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        -webkit-transition-delay: 0.1s;
+        transition-delay: 0.1s;
+      }
+    </style>
+
+
+    <div class$="{{_getButtonClass(checked)}}">
+      <div class="bg"></div>
+      <div class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+          <path d="M10.5 21l7.5-7.5 7.5 7.5z"/>
+        </svg>
+      </div>
+      <div class="count">{{votes}}</div>
+      <div class="count-up">{{votes}}</div>
+    </div>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'vote-button',
+
+      listeners: {
+        'tap': '_onTap'
+      },
+
+      properties: {
+        votes: {
+          type: Number,
+          notify: true
+        },
+        checked: {
+          type: Boolean,
+          value: false,
+          notify: true
+        }
+      },
+      _getButtonClass: function(checked) {
+        return 'button' + (checked ? ' checked' : '');
+      },
+      _onTap: function() {
+        this.fire('vote');
+        this.checked = !this.checked;
+      }
+    });
+  })();
+  </script>
+</dom-module>

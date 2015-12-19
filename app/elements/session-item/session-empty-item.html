@@ -17,18 +17,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
       .container {
-        margin: 10px 5px 0px 5px;
-        height: 80px;
+        /*margin: 10px 5px 0px 5px;*/
+        /*height: 80px;*/
       }
     </style>
-    <div class="container"></div>
+    <div id="container" class="container"></div>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'session-empty-item'
+      is: 'session-empty-item',
+
+      properties: {
+        size: {
+          type: Object,
+          value: function () {
+            return 1;
+          }
+        }
+      },
+      ready: function () {
+        this.$.container.style.height = (15 * this.size) + 'px';
+      }
     });
   })();
   </script>

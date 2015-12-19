@@ -55,3 +55,63 @@ paper-material {
   }
 
 }
+
+
+paper-drawer-panel {
+  --paper-drawer-panel-left-drawer-container: {
+    background-color: var(--dark-primary-color);
+  };
+}
+
+.main-toolbar {
+  /*height: 100px;*/
+}
+
+.secondary-toolbar {
+  background-color: #e74c3c;
+  z-index: -1;
+}
+
+
+
+.poll-icon {
+  --iron-icon-height: 100px;
+  --iron-icon-width: 100px;
+}
+
+.main-toolbar::shadow #topBar {
+  /*height: 96px;*/
+}
+
+#menu-button {
+  position: absolute;
+  top: calc(100px - 28px);
+  right: 24px;
+  z-index: 1;
+  --paper-fab-background:#e74c3c;
+  --paper-fab-keyboard-focus-background:#c0392b;
+}
+
+.user-name {
+  @apply(--paper-font-common-nowrap);
+  @apply(--paper-font-title);
+  margin-left:80px;
+}
+
+.toolbar-icon {
+  --iron-icon-height: 64px;
+  --iron-icon-width: 64px;
+  position: absolute;
+  top: 16px;
+  z-index: 999;
+}
+
+.toolbar-icon ::content img {
+  border: 3px solid #607D8B;
+  border-radius: 50%;
+}
+
+.container {
+  margin: 0;
+  height: 100%;
+}

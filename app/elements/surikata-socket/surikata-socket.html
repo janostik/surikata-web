@@ -1,0 +1,177 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="surikata-socket">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'surikata-socket',
+
+      properties: {
+        url: {
+          type: String,
+          notify: true,
+          observer: 'urlChanged'
+        },
+        /**
+         * Automatically connect when the URL is changed ? Defaults to false.
+         * @public
+         * @type {Boolean}
+         */
+        auto: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        /**
+         * Should both sent and received data be interpreted as json and encoded/decoded ? Defaults to false.
+         * @public
+         * @type {Boolean}
+         */
+        json: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        /**
+         * Should sent data be json-encoded, even if {{json}} is falsy ? Defaults to false.
+         * @public
+         * @type {Boolean}
+         */
+        jsonSend: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        /**
+         * Should received data be json-decoded, even if {{json}} is falsy ? Defaults to false.
+         * @type {Boolean}
+         */
+        jsonReceive: {
+          type: Boolean,
+          notify: true,
+          value: false
+        }
+      },
+
+      /**
+       * WebSocket object.
+       * @private
+       * @type {WebSocket}
+       */
+      _ws: null,
+
+      /**
+       * Open the connection if previously closed, or if {{auto}} is false.
+       * @public
+       */
+      open: function() {
+        this._connect();
+      },
+
+      /**
+       * Close the current connection. Optionally provide with a reason.
+       * @public
+       * @param {[String]} Optional closing reason to provide the server with.
+       */
+      close: function(reason) {
+        if(this._ws) {
+          this._ws.close(reason);
+          this._ws = null;
+        }
+      },
+      /**
+       * Underlying connection readyState getter.
+       * @see {@link http://www.w3.org/TR/websockets/#dom-websocket-readystate}
+       * @public
+       * @type {Number}
+       */
+      get readyState() {
+        if(this._ws) {
+          return this._ws.readyState;
+        }
+        else {
+          return -1;
+        }
+      },
+
+      /**
+       * {{url}} change handler.
+       * @private
+       */
+      urlChanged: function() {
+        if (this.auto) {
+          this.open();
+        }
+      },
+      /**
+       * Create a connection to the remote server identified by {{url}}.
+       * @private
+       */
+      _connect: function() {
+        if(!this.url) {
+          throw new Error('x-websocket.connect(...): no url.');
+        }
+        if(this._ws) {
+          throw new Error('x-websocket.connect(...): already connected.');
+        }
+        this._ws = new WebSocket(this.url);
+        this._ws.onopen = this._onwsopen.bind(this);
+        this._ws.onerror = this._onwserror.bind(this);
+        this._ws.onmessage = this._onwsmessage.bind(this);
+        this._ws.onclose = this._onwsclose.bind(this);
+      },
+      /**
+       * WebSocket open event handler. Re-fires to the x-websocket element.
+       * @private
+       */
+      _onwsopen: function() {
+        this.fire('open');
+      },
+      /**
+       * WebSocket error event handler. Re-fires to the x-websocket element.
+       * @private
+       */
+      _onwserror: function() {
+        this.fire('error');
+      },
+      /**
+       * WebSocket message event handler. Re-fires to the x-websocket element, after optionally json-parsing the payload if {{json}} or {{jsonReceive}} is truthy.
+       * @private
+       */
+      _onwsmessage: function(event) {
+        var data = event.data;
+        if(this.json || this.jsonReceive) {
+          data = JSON.parse(data);
+        }
+        this.fire('message', { data: data });
+      },
+      /**
+       * WebSocket close event handler.
+       * @private
+       */
+      _onwsclose: function(event) {
+        this.fire('error', { code: event.code, reason: event.reason });
+      }
+    });
+  })();
+  </script>
+</dom-module>

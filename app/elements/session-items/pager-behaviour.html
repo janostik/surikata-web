@@ -1,0 +1,59 @@
+<script>
+
+  /*exported PagerBehaviour */
+  var PagerBehaviour = {
+
+    properties: {
+      current: {
+        type: Number,
+        notify: true,
+        value: 0
+      },
+      size: {
+        type: Number,
+        notify: true,
+        value: 0
+      },
+      total: {
+        type: Number,
+        notify: true,
+        value: 0
+      }
+    },
+
+
+    setSize: function (size) {
+      this.size = size;
+    },
+
+    setTotal: function (total) {
+      this.total = total;
+    },
+
+    contains: function (i) {
+      return i >= this.current && i < (this.current + this.size);
+    },
+
+    hasPrevious: function () {
+      return this.current > 0;
+    },
+
+    previous: function () {
+      if (this.hasPrevious()) {
+        this.current--;
+      }
+    },
+
+    hasNext: function () {
+      return (this.current + this.size) < ( this.total - 1 );
+    },
+
+    next: function () {
+      if (this.hasNext()) {
+        this.current++;
+      }
+    }
+
+  };
+
+</script>

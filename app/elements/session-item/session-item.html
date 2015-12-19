@@ -10,20 +10,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../on-page-hero-animation/on-page-hero-animation.html">
 
 <dom-module id="session-item">
   <template>
     <style>
       :host {
         display: block;
+        color: rgba(0,0,0,0.5);
       }
       paper-material {
         background-color: white;
-        margin: 10px 5px 0px 5px;
-        height: 170px;
-        border-radius: 3px;
+        margin: 0px 5px 0px 5px;
         @apply(--layout-horizontal);
       }
       :host[active] paper-material {
@@ -32,91 +38,154 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host[active] .title ::content {
         color: whitesmoke;
       }
-      :host[active] .description ::content {
-        color: ghostwhite;
-      }
 
-      :host[small] paper-material {
-        height: 80px;
-      }
       .content {
         @apply(--layout-flex);
         @apply(--layout-vertical);
       }
 
-      .title ::content *{
-        padding: 16px 12px 4px 16px;Å
-        overflow: hidden;
+      .title {
+        padding: 0px 12px 10px 12px;
+        @apply(--paper-font-common-base);
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 28px;
+
         text-overflow: ellipsis;
-        white-space: nowrap;
-        font-weight: bold;
-        @apply(--paper-font-subheading);
+        white-space: normal;
+        word-wrap: break-word;
       }
 
-      :host[small] .description ::content * {
-        white-space: nowrap;
+      .duration {
+        @apply(--paper-font-common-base);
+        font-size: 12px;
+        top: 4px;
+        right: 12px;
+        position: absolute;
       }
 
-      .description ::content * {
-        padding: 4px 16px 0px 16px;
-        margin: 0;
+      .text {
         @apply(--paper-font-body1);
-        /*color: gray;*/
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-align: justify;
       }
 
       @media (-webkit-min-device-pixel-ratio: 0) {
-        :host:not([small]) .description ::content * {
-          display: -webkit-box;
-          -webkit-line-clamp: 3; /* number of lines to show */
-          -webkit-box-orient: vertical;
+        .title {
+          /*display: -webkit-box;*/
+          /*-webkit-line-clamp: 3; !* number of lines to show *!*/
+          /*-webkit-box-orient: vertical;*/
         }
       }
 
       .round-image ::content img {
         border-radius: 50%;
+        border: 2px solid rgba(0,0,0,.5);
       }
 
-      .right-image {
-        --iron-image-width: 40px;
-        --iron-image-height: 40px;
-        margin: 20px 8px 20px 0px;
+      .footer {
+        height: 37px;
+        padding: 4px 0px;
+        @apply(--layout-horizontal)
       }
 
-      .bottom-image {
-        --iron-image-width: 40px;
-        --iron-image-height: 40px;
-        margin: 4px 16px 8px 16px;
+      .footer iron-image {
+        --iron-image-width: 29px;
+        --iron-image-height: 29px;
+        margin-left: 12px;
+      }
+
+      .footer iron-image:not(:first-child) {
+        --iron-image-width: 27px;
+        --iron-image-height: 27px;
+        margin-top: 2px;
+        margin-left: 6px;
       }
 
       .flex-child {
         @apply(--layout-flex)
       }
 
+      .row {
+        @apply(--layout-horizontal)
+      }
+
+      #detail {
+        visibility: hidden;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-top: -125px;
+        margin-left: -300px;;
+        width: 600px;
+        height: 250px;
+      }
+
+      .fixed {
+        position: fixed;
+        top:0;
+        left:0;
+        bottom:0;
+        right:0;
+        background-color: rgba(0,0,0,.3);
+        visibility: hidden;
+        z-index: 1000;
+      }
+
+      .bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 2px;
+      }
+
     </style>
-    <paper-material elevation="1">
-      <div class="left-image">
-        <content select="[left-image]"></content>
-      </div>
-      <div class="content">
-        <span class="title">
-          <content select="[title]"></content>
+    <paper-material id="card" class="content" elevation="1">
+      <div class="bar"></div>
+        <span class="duration">
+          9:00-10:00
         </span>
-        <span class="description flex-child">
-          <content select="[description]"></content>
-        </span>
-        <div class="round-image bottom-image">
-          <content select="[bottom-author]"></content>
+        <div id="title" class="title flex-child">
+          {{session.name}}
         </div>
+      <div class="footer">
+        <!--<template is="dom-repeat" items="{{session.speaker}}" as="speaker">-->
+          <!--<iron-image class="round-image" src="http://lorempixel.com/60/60/people/"></iron-image>-->
+        <!--</template>-->
+        <div class="flex-child"></div>
+        <paper-icon-button on-click="_onOpenQuestions" icon="communication:chat-bubble-outline"></paper-icon-button>
       </div>
-      <div class="round-image right-image">
-        <content select="[right-author]"></content>
+      <div class="image-row">
+
       </div>
 
     </paper-material>
+
+    <paper-material id="detail" class="content" elevation="1">
+      <div class="bar"></div>
+      <span class="duration">
+          9:00-10:00
+      </span>
+      <div id="detailTitle" class="title">
+        {{session.name}}
+      </div>
+
+      <paper-dialog-scrollable id="description" class="text flex-child">
+        <p>{{session.description}}</p>
+      </paper-dialog-scrollable>
+
+      <div class="footer">
+        <template is="dom-repeat" items="{{session.Speaker}}" as="speaker">
+          <iron-image class="round-image" src="http://lorempixel.com/60/60/people/"></iron-image>
+        </template>
+        <div class="flex-child"></div>
+        <paper-icon-button on-click="_onOpenQuestionsFromDetail" icon="communication:chat-bubble-outline"></paper-icon-button>
+        <paper-button on-click="_onClose">Close</paper-button>
+      </div>
+    </paper-material>
+
+    <div class="fixed" on-click="_onClose" id="overlay"></div>
   </template>
+
   <script>
   (function() {
     'use strict';
@@ -124,8 +193,106 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'session-item',
 
+      listeners: {
+        click: '_onClick'
+      },
+
+      behaviors: [
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
       properties: {
+//        size: {
+//          type: Object,
+//          value: function () {
+//            return 1;
+//          }
+//        },
+        cardClass: {
+          type: String,
+          value: function () {
+            return '';
+          }
+        },
+        tint: {
+          type: String,
+          value: function () {
+            return '#000000';
+          }
+        },
+        session: {
+          type: Object,
+          value: function () {
+            return {};
+          }
+        },
+        animationConfig: {
+          type: Object,
+          value: function () {
+            return {
+              'open': [{
+                name: 'on-page-hero-animation',
+                id: 'hero',
+                from: this.$.card,
+                to: this.$.detail
+              }, {
+                name: 'fade-in-animation',
+                node: this.$.overlay
+              }],
+              'close': [{
+                name: 'on-page-hero-animation',
+                id: 'hero',
+                from: this.$.detail,
+                to: this.$.card
+              }, {
+                name: 'fade-out-animation',
+                node: this.$.overlay
+              }]
+            };
+          }
+        }
+      },
+
+      ready: function () {
+        this.$.card.style.height = (10 * this.session.Size) + 'px';
+        var self = this;
+        Polymer.dom(this.root).querySelectorAll('.bar').forEach(function(title) {
+          title.style.backgroundColor = self.tint;
+        });
+      },
+
+      _onClick: function () {
+        this.$.detail.style.visibility = 'visible';
+        this.$.overlay.style.visibility = 'visible';
+        this.playAnimation('open');
+        event.stopPropagation();
+      },
+
+      _onClose: function (event) {
+        this.playAnimation('close');
+        this.$.card.style.visibility = 'visible';
+        this.$.card.style.zIndex = '';
+        this.$.detail.style.visibility = 'hidden';
+        this.$.overlay.style.visibility = 'hidden';
+        event.preventDefault();
+        event.stopPropagation();
+      },
+
+      _onOpenQuestions: function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.fire('open', this.$.card);
+        this._onClose(event);
+      },
+
+      _onOpenQuestionsFromDetail: function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.fire('open', this.$.detail);
+        this._onClose(event);
       }
+
+
     });
   })();
   </script>

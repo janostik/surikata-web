@@ -1,0 +1,76 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../vote-button/vote-button.html">
+
+
+<dom-module id="question-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: relative;
+        z-index: 2;
+      }
+      paper-material {
+        background-color: #f8f8f8;
+        padding: 16px;
+        @apply(--layout-horizontal);
+      }
+      .description {
+        padding: 16px;
+        @apply(--paper-font-body2);
+      }
+    </style>
+
+    <iron-ajax
+      id="questionResource"
+      url$="{{getUrl(question.id)}}"
+      method="POST"></iron-ajax>
+
+    <paper-material elevation="1">
+      <vote-button id="voteButton" votes="{{question.vote}}" on-vote="_onVoted"></vote-button>
+      <span class="description">
+        {{question.question}}
+      </span>
+    </paper-material>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'question-item',
+
+      properties: {
+        question: {
+          type: Object,
+          value: {},
+          notify: true
+        }
+      },
+      getUrl: function(questionId) {
+        return 'http://suricata.cleverapps.io/core/question/' + questionId;
+      },
+      _onVoted: function() {
+        console.log('Question voted');
+        //Use set for nested properties
+        var alreadyVoted = this.$.voteButton.checked;
+        this.set('question.vote', this.question.vote + (alreadyVoted ? -1 : 1));
+        this.$.questionResource.generateRequest();
+      }
+    });
+  })();
+  </script>
+</dom-module>

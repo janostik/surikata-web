@@ -1,0 +1,88 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+<link rel="import" href="../session-items/session-items.html">
+<link rel="import" href="../animated-list/animated-list.html">
+
+
+<dom-module id="surikata-app">
+  <link rel='import' type='css' href='../../styles/shared.css'>
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-header-panel mode="seamed">
+
+      <paper-toolbar id="toolbar" class="main-toolbar">
+        <iron-icon class="toolbar-icon" src="../../images/icons/male_avatar.svg"></iron-icon>
+        <div class="user-name">Anonymous</div>
+        <span flex></span>
+        <!--<paper-fab id="menu-button" icon="add"></paper-fab>-->
+      </paper-toolbar>
+
+      <neon-animated-pages id="pages" class="fit" selected="0">
+
+        <session-items id="sessions" on-open="_onSessionOpen" class="fit"></session-items>
+
+        <animated-list id="questions" on-close="_onSessionClose"></animated-list>
+
+      </neon-animated-pages>
+    </paper-header-panel>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    //TODO: ADD
+//    {
+//      name: 'slide-down-animation',
+//        node: this.$.toolbar
+//    },
+
+//    ,{
+//      name: 'slide-up-animation',
+//        node: this.$.toolbar
+//    }
+
+    Polymer({
+      is: 'surikata-app',
+      properties: {
+        foo: {
+          type: String,
+          value: 'surikata-app',
+          notify: true
+        }
+      },
+      _onSessionOpen: function(event, data) {
+        if(data.eventToken && data.session) {
+          this.$.questions.url = 'ws://suricata.cleverapps.io/core/event/' + data.eventToken + '/' + data.session.sessionToken;
+          this.$.questions.eventToken = data.eventToken;
+          this.$.questions.session = data.session;
+          this.$.pages.selected = 1;
+        }
+      },
+      _onSessionClose: function() {
+        this.$.pages.selected = 0;
+      }
+    });
+  })();
+  </script>
+</dom-module>

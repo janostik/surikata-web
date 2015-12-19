@@ -1,0 +1,102 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../on-page-hero-animation/on-page-hero-animation.html">
+
+<dom-module id="session-static-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+        color: rgba(0,0,0,0.5);
+      }
+      .content {
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+      }
+
+      .title {
+        /*overflow: hidden;*/
+
+        padding: 0px 12px 10px 12px;
+        /*@apply(--paper-font-title);*/
+        @apply(--paper-font-common-base);
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 28px;
+
+        text-overflow: ellipsis;
+        white-space: normal;
+        word-wrap: break-word;
+      }
+
+      .duration {
+        @apply(--paper-font-common-base);
+        width: 100%;
+        height: 19px;
+        padding-top: 4px;
+        margin-left: -12px;
+        font-size: 12px;
+        font-style: italic;
+        text-align: right;
+      }
+
+      .flex-child {
+        @apply(--layout-flex)
+      }
+
+
+    </style>
+    <div id="card" class="content" elevation="1">
+        <span class="duration">
+          9:00-10:00
+        </span>
+        <div id="title" class="title flex-child">
+          {{session.Name}}
+        </div>
+    </div>
+
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'session-static-item',
+
+      properties: {
+        session: {
+          type: Object,
+          value: function () {
+            return {};
+          }
+        }
+      },
+
+      ready: function () {
+        this.$.card.style.height = (10 * this.session.Size) + 'px';
+      }
+
+
+
+    });
+  })();
+  </script>
+</dom-module>

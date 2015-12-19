@@ -9,10 +9,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-left-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/transform-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/ripple-animation.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../on-page-hero-animation/on-page-hero-animation.html">
+<link rel="import" href="../question-item/question-item.html">
+<link rel="import" href="../surikata-socket/surikata-socket.html">
 
 <dom-module id="animated-list">
-
+  <link rel="import" type="css" href="../../styles/shared.css">
   <template>
     <style>
       :host {
@@ -21,14 +43,165 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       neon-animated-pages {
         height: 100%;
       }
+      .content {
+        /*color: var(--google-grey-500);*/
+        /*font-size: 0.9em;*/
+        /*text-align: justify;*/
+        @apply(--layout-vertical);
+      }
+      paper-drawer-panel [main] {
+        background-color: var(--google-grey-100);
+      }
+      paper-drawer-panel [drawer] {
+        border-right: 1px solid var(--google-grey-300);
+        background-color: white;
+      }
+
+      .main-toolbar {
+        /* custom toolbar height */
+        background-color: #ffffff;
+        color: rgba(0,0,0,0.7);
+        overflow: visible;
+      }
+      .bottom-toolbar {
+        visibility: hidden;
+        --paper-toolbar-height: 132px;
+        --paper-toolbar-sm-height: 132px;
+        --paper-toolbar-background: #607D8B;
+
+      }
+      .drawer-toolbar {
+        --paper-toolbar: {
+          background: url("http://lorempixel.com/192/192/people/");
+        }
+      }
+
+      .fab {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 9999;
+        background-color: #607D8B;
+      }
+
+      .input {
+        width: 90%;
+      }
+
+
+      paper-button {
+        height: 60px;
+        --paper-button: {
+          @apply(--layout-vertical);
+          @apply(--layout-center-center);
+        };
+      }
+      paper-icon-button {
+        margin: 0 8px;
+        --paper-icon-button-ink-color: white;
+      }
+
+      .row {
+        @apply(--layout-flex);
+        @apply(--layout-horizontal);
+      }
+
+      .column {
+        height: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-justified);
+      }
+
+      .toolbar-row {
+        height: 100%;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        margin-right: -8px;
+      }
+
+      .flex-child {
+        @apply(--layout-flex)
+      }
+
+      .fixed {
+        background-color: #CFD8DC;
+      }
     </style>
-    <neon-animated-pages id="pages" selected="0">
 
-      <question-list on-open="_onQuestionClick" questions="{{questionList}}"></question-list>
+    <surikata-socket
+      id="ws"
+      url="{{url}}"
+      json="true"
+      on-open="_onFeedOpen"
+      on-message="_onFeedMessage"></surikata-socket>
 
-      <question-detail id="question-detail" hero-id="hero" on-close="_onQuestionClose"></question-detail>
+    <iron-ajax
+      id="questionResource"
+      url="http://suricata.cleverapps.io/core/question"
+      method="POST"
+      handle-as="json"
+      on-response="_onQuestionSent"></iron-ajax>
 
-    </neon-animated-pages>
+    <paper-drawer-panel class="fit">
+
+      <paper-scroll-header-panel drawer id="drawer" mode="seamed" header-height="192" >
+        <paper-toolbar class="drawer-toolbar tall">
+          <div class="bottom">
+            <span>Rada von Sohlich</span>
+            <span>rada@supermail.com</span>
+          </div>
+        </paper-toolbar>
+        <div class="content">
+          Rada is an experienced speaker and lobbyist for Open Source, Open Innovation, Community and Governance. With a solid technical background, and having gained experience on various Open Source projects before joining Red Hat as a Pre-Sales Consultant, he has helped numerous Red Hat customers and governments to embrace The Open Source Way. He was involved in the European fight against software patents, the "war" on document standards and is widely known as a pragmatic and convincing spokesperson not only for Red Hat, but for Open Innovation in general.
+        </div>
+      </paper-scroll-header-panel>
+
+
+      <!-- `keepCondensedHeader` makes the condensed header to not scroll away -->
+      <paper-header-panel main mode="seamed">
+
+        <paper-toolbar class="main-toolbar" id="toolbar">
+          <!--<div class="title">Session title</div>-->
+          <div class="top title">{{session.name}}</div>
+          <paper-icon-button class="top" icon="close" on-tap="_onSessionClose"></paper-icon-button>
+
+        </paper-toolbar>
+        <div class="content fit">
+
+
+          <div class="scrollable flex-child">
+            <template is="dom-repeat" items="{{questions}}" as="question">
+              <question-item question="{{question}}"></question-item>
+            </template>
+            <div id="fixed" class="fixed fit"></div>
+          </div>
+
+          <paper-toolbar id="bottomToolbar" class="bottom-toolbar">
+            <div class="row toolbar-row">
+              <paper-textarea id="questionInput"
+                              label="Add comment"
+                              multiline
+                              max-rows="3"
+                              rows="3"
+                              maxlength="300"
+                              char-counter
+                              auto-validate class="flex-child">
+
+              </paper-textarea>
+              <div class="column">
+                <paper-icon-button suffix icon="close" on-tap="_hideNewComment"></paper-icon-button>
+                <paper-icon-button suffix icon="send" on-tap="_sendQuestion"></paper-icon-button>
+              </div>
+
+            </div>
+          </paper-toolbar>
+
+          <paper-fab id="addQuestionFab" on-tap="_showNewComment" class="fab" icon="add"></paper-fab>
+        </div>
+
+      </paper-header-panel>
+
+    </paper-drawer-panel>
   </template>
   <script>
   (function() {
@@ -37,18 +210,126 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'animated-list',
 
+      behaviors: [
+        Polymer.NeonSharedElementAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
       properties: {
-        questionList: {
+        url: {
+          type: String,
+          value: null,
+          notify: true,
+          observer: 'sessionChanged'
+        },
+        eventToken: {
+          type: String,
+          value: ''
+        },
+        session: {
+          type: String,
+          value: ''
+        },
+        questions: {
           type: Array,
-          value: function () {
-            return [
-              {content: 'How do you like this awesome surikata design?', votes: 65, author: {id: 0, name: 'Anonymous'}},
-              {content: 'Surikata is just AWESOME name!!', votes: 43, author: {id: 0, name: 'Anonymous'}},
-              {content: 'This was kind of stupid question', votes: 11, author: {id: 0, name: 'Rada'}},
-              {content: 'What am I doing here?', votes: 5, author: {id: 0, name: 'Fera'}}
-            ];
+          value: []
+        },
+        sharedElements: {
+          type: Object,
+          value: function() {
+            return {
+              'hero': this.$.toolbar,
+              'ripple': this.$.fixed
+            };
           }
         },
+        animationConfig: {
+          type: Object,
+          value: function() {
+            return {
+              'entry': [{
+                name: 'ripple-animation',
+                id: 'ripple',
+                toPage: this
+              },{
+                name: 'hero-animation',
+                id: 'hero',
+                toPage: this,
+                timing: {
+                  delay: 150
+                }
+              },{
+                name: 'slide-from-left-animation',
+                node: this.$.drawer
+              },{
+                name: 'slide-from-right-animation',
+                node: this.$.addQuestionFab,
+                timing: {
+                  delay: 100
+                }
+              },{
+                name: 'cascaded-animation',
+                animation: 'slide-from-right-animation',
+                nodes:[],
+                nodedelay: 100
+              }],
+              'exit': [{
+                name: 'transform-animation',
+                transformFrom: 'none',
+                transformTo: 'translate(0px,-200vh) scale(0.9,1)',
+                node: this
+              }],
+              'showNewComment': {
+                name: 'on-page-hero-animation',
+                from: this.$.addQuestionFab,
+                to: this.$.bottomToolbar
+              },'hideNewComment': {
+                name: 'on-page-hero-animation',
+                from: this.$.bottomToolbar,
+                to: this.$.addQuestionFab
+              },
+              'loadComments': {
+                name: 'cascaded-animation',
+                animation: 'slide-from-right-animation',
+                nodedelay: 100
+              }
+            };
+          }
+        }
+      },
+      sessionChanged: function() {
+        if(this.url === null) {
+          return;
+        }
+        try {
+          this.$.ws.close(1000);
+        } catch(e) {
+          console.log('Cant close session thread: ' + e);
+        }
+
+        try {
+          this.$.ws.open();
+          console.log('Opened: ' + this.url);
+        } catch (e) {
+          console.log('Already opened');
+        }
+      },
+      _onFeedOpen: function() {
+        console.log('Opened!');
+      },
+      _onFeedMessage: function(event, response) {
+        console.log('Recieved: ' + JSON.stringify(response.data));
+        var oldNodes = Polymer.dom(this.root).querySelectorAll('question-item');
+        this.questions = response.data;
+        this.async(function() {
+          var allNodes = Polymer.dom(this.root).querySelectorAll('question-item');
+          this.animationConfig.loadComments.nodes = allNodes.filter(function(node) {
+            return oldNodes.indexOf(node) === -1;
+          });
+          this.playAnimation('loadComments');
+          this.animationConfig.entry[4].nodes = allNodes;
+        });
+
       },
       _onQuestionClick: function() {
         this.$['question-detail'].question = event.detail.data;
@@ -56,6 +337,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _onQuestionClose: function() {
         this.$.pages.selected = 0;
+      },
+      _onSessionClose: function () {
+        this.fire('close');
+      },
+      _showNewComment: function () {
+        this.$.bottomToolbar.style.visibility = 'visible';
+        this.playAnimation('showNewComment');
+      },
+      _hideNewComment: function () {
+        this.$.addQuestionFab.style.visibility = 'visible';
+        this.playAnimation('hideNewComment');
+      },
+      _sendQuestion: function () {
+        this.$.questionResource.body = JSON.stringify({
+          'EventToken': this.eventToken,
+          'SessionToken': this.session.sessionToken,
+          'question': this.$.questionInput.value
+        });
+        this.$.questionResource.generateRequest();
+      },
+      _onQuestionSent: function() {
+        this.$.questionInput.value = '';
+        this._hideNewComment();
       }
     });
   })();
